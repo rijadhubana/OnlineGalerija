@@ -5,22 +5,30 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
 using OnlineGalerija.Models;
+using Newtonsoft.Json;
 
 namespace OnlineGalerija.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private mongoDbContext _dbContext;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+            _dbContext = new mongoDbContext();
         }
 
         public IActionResult Index()
         {
-            return View();
+            //var test = _dbContext.database.GetCollection<Test>("test").Find<Test>(a=>a._id == "60a52b5cbd430955135f93b9").FirstOrDefault();
+            //var test = _dbContext.database.GetCollection<Test>("test").Count(a=>a._id != "a");
+            var test = _dbContext.database.GetCollection<Test>("test").Find(a => a._id == "60a52b5cbd430955135f93b9").ToList();
+            string myNew = JsonConvert.SerializeObject(test);
+            return View("Index",myNew);
         }
 
         public IActionResult Privacy()
