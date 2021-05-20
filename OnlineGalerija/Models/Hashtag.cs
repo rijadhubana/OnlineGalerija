@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace OnlineGalerija.Models
 {
-    public class Niz
+    public class Hashtag
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string _id { get; set; }
-        [BsonElement("predmeti")]
-        public ICollection<string> predmeti { get; set; }
+        [BsonElement("text")]
+        public string text { get; set; }
     }
 }

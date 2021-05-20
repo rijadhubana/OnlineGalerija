@@ -13,7 +13,7 @@ namespace OnlineGalerija.Models
         public mongoDbContext()
         {
             client = new MongoClient("mongodb+srv://mrakks:MyWeakPassword@cluster0.rdvtp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
-            database = client.GetDatabase("testbaza");
+            database = client.GetDatabase("OnlineGalerija");
         }
         
 

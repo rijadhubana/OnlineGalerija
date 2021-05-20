@@ -24,14 +24,8 @@ namespace OnlineGalerija.Controllers
 
         public IActionResult Index()
         {
-            //var test = _dbContext.database.GetCollection<Test>("test").Find<Test>(a=>a._id == "60a52b5cbd430955135f93b9").FirstOrDefault();
-            //var test = _dbContext.database.GetCollection<Test>("test").Count(a=>a._id != "a");
-            //var test = _dbContext.database.GetCollection<Test>("test").Find(a => true).ToList();
-            var test = _dbContext.database.GetCollection<Niz>("niz").Find(a => true).ToList();
-            string myNew = JsonConvert.SerializeObject(test);
-            //Test rijadNovi = new Test() { name = "Rijad", surname = "Hubana" };
-            //_dbContext.database.GetCollection<Test>("test").InsertOne(rijadNovi);
-            return View("Index",myNew);
+            //OnlineGalerija.Helper.Methods.ExecuteCreation(_dbContext);
+            return View("Index");
         }
 
         public IActionResult Privacy()
