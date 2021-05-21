@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Npgsql;
 
 namespace OnlineGalerija
 {
@@ -23,6 +24,8 @@ namespace OnlineGalerija
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            //services.AddDbContext<posgresDbContext>(options =>
+            //options.UseNpgsql(Configuration.GetConnectionString("postgresDbContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
