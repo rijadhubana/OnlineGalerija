@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Configuration;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,11 @@ namespace OnlineGalerija.Models
         public IMongoDatabase database;
         public mongoDbContext()
         {
-            client = new MongoClient("mongodb+srv://mrakks:MyWeakPassword@cluster0.rdvtp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
+            client = new MongoClient(configuration.GetConnectionString("MongoOnlineGalerija"));
             database = client.GetDatabase("OnlineGalerija");
         }
         

@@ -14,5 +14,7 @@ namespace OnlineGalerija.Models
         public string _id { get; set; }
         [BsonElement("text")]
         public string text { get; set; }
+        [BsonElement("referencedIn")]
+        public ICollection<Post> referencedIn { get; set; }
     }
 }

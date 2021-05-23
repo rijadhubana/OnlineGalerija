@@ -18,5 +18,9 @@ namespace OnlineGalerija.Models
         public DateTime created_at { get; set; }
         [BsonElement("post")]
         public Post post { get; set; }
+        [BsonElement("user")]
+        public User user { get; set; }
+        [BsonElement("reactions")]
+        public ICollection<ReactionComment> reactions { get; set; }
     }
 }

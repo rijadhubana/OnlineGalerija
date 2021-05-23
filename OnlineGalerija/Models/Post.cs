@@ -24,5 +24,9 @@ namespace OnlineGalerija.Models
         public ICollection<Hashtag> hashtags { get; set; }
         [BsonElement("images")]
         public ICollection<Image> images { get; set; }
+        [BsonElement("reactions")]
+        public ICollection<ReactionPost> reactions { get; set; }
+        [BsonElement("user")]
+        public User user { get; set; }
     }
 }

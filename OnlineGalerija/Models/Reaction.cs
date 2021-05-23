@@ -16,5 +16,9 @@ namespace OnlineGalerija.Models
         public string reaction_name { get; set; }
         [BsonElement("reaction_image_data")]
         public byte[] reaction_image_data { get; set; }
+        [BsonElement("referencedinRC")]
+        public ICollection<ReactionComment> referencedinRC { get; set; }
+        [BsonElement("referencedinRP")]
+        public ICollection<ReactionPost> referencedinRP { get; set; }
     }
 }

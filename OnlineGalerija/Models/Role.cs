@@ -14,6 +14,8 @@ namespace OnlineGalerija.Models
         public string _id { get; set; }
         [BsonElement("name")]
         public string name { get; set; }
-        
+        [BsonElement("referencedIn")]
+        public ICollection<User> referencedIn { get; set; }
+
     }
 }

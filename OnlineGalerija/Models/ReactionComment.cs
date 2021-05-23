@@ -16,5 +16,7 @@ namespace OnlineGalerija.Models
         public Reaction reaction { get; set; }
         [BsonElement("comment")]
         public Comment comment { get; set; }
+        [BsonElement("user")]
+        public User user { get; set; }
     }
 }

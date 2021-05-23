@@ -8,18 +8,21 @@ using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using OnlineGalerija.Models;
 using Newtonsoft.Json;
+using OnlineGalerija.PostgresModels;
 
 namespace OnlineGalerija.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private mongoDbContext _dbContext;
+        private mongoDbContext _mongoDbContext;
+        private postgresDbContext _postgresDbContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, postgresDbContext dbContext)
         {
             _logger = logger;
-            _dbContext = new mongoDbContext();
+            _mongoDbContext = new mongoDbContext();
+            _postgresDbContext = dbContext;
         }
 
         public IActionResult Index()

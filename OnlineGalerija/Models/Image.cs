@@ -14,5 +14,7 @@ namespace OnlineGalerija.Models
         public string _id { get; set; }
         [BsonElement("image_data")]
         public byte[] image_data { get; set; }
+        [BsonElement("post")]
+        public Post post { get; set; }
     }
 }
