@@ -28,6 +28,8 @@ namespace OnlineGalerija
             services.AddControllersWithViews();
             services.AddDbContext<postgresDbContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("PostgreOnlineGalerija")));
+            services.AddDistributedMemoryCache();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,11 +43,14 @@ namespace OnlineGalerija
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            app.UseSession();
+
             app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {

@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MongoDB.Driver;
 using OnlineGalerija.Models;
-using Newtonsoft.Json;
 using OnlineGalerija.PostgresModels;
+using System.Diagnostics;
+using MongoDB.Driver;
+using System.Linq;
+using OnlineGalerija.ViewModels;
+using OnlineGalerija.Helper;
 
 namespace OnlineGalerija.Controllers
 {
@@ -24,10 +22,56 @@ namespace OnlineGalerija.Controllers
             _mongoDbContext = new mongoDbContext();
             _postgresDbContext = dbContext;
         }
-
+        public LoggedUser napraviMongoKorisnika(Models.User user)
+        {
+            LoggedUser newL = new LoggedUser() { IsMongoUser = true, postgreUser = null, mongoUser = new MongoUser() };
+            newL.mongoUser.objId = user._id; newL.mongoUser.mongoUser = user;
+            return newL;
+        }
+        public LoggedUser napraviPostgreKorisnika(PostgresModels.User user)
+        {
+            LoggedUser newL = new LoggedUser() { IsMongoUser = false, mongoUser = null, postgreUser = new PostgreUser() };
+            newL.postgreUser.userId = user.Id; newL.postgreUser.postgreUser = user;
+            return newL;
+        }
+        public IActionResult MongoAuth(string username, string password)
+        {
+            var foundUser = _mongoDbContext.database.GetCollection<Models.User>("user").Find(a => a.username == username && a.passwordhash == password).FirstOrDefault();
+            if (foundUser == null)
+            {
+                return View("MongoLogin", "Nevalidni kredencijali!");
+            }
+            else
+            {
+                HttpContext.SetLogiraniKorisnik(napraviMongoKorisnika(foundUser), false);
+                return Redirect("/Mongo/Index");
+            }
+        }
+        public IActionResult PostgreLogin()
+        {
+            return View("PostgreLogin", null);
+        }
+        public IActionResult MongoLogin()
+        {
+            return View("MongoLogin", null);
+        }
+        public IActionResult PostgreAuth(string username, string password)
+        {
+            //var foundUser = _mongoDbContext.database.GetCollection<PostgresModels.User>("user").Find(a => a.username == username && a.passwordhash == password).FirstOrDefault();
+            var foundUser = _postgresDbContext.Users.Where(a => a.Username == username && a.PasswordHash == password).FirstOrDefault();
+            if (foundUser == null)
+            {
+                return View("PostgreLogin", "Nevalidni kredencijali!");
+            }
+            else
+            {
+                HttpContext.SetLogiraniKorisnik(napraviPostgreKorisnika(foundUser), false);
+                return Redirect("/Postgre/Index");
+            }
+        }
         public IActionResult Index()
         {
-            //OnlineGalerija.Helper.Methods.ExecuteCreation(_dbContext);
+            //OnlineGalerija.Helper.Methods.ExecuteCreation(_mongoDbContext);
             return View("Index");
         }
 
