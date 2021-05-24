@@ -13,7 +13,7 @@ namespace OnlineGalerija.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string _id { get; set; }
         [BsonElement("title")]
-        public string name { get; set; }
+        public string title { get; set; }
         [BsonElement("text")]
         public string text { get; set; }
         [BsonElement("created_at")]

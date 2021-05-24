@@ -1,8 +1,42 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@model string
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">@Model</a>.</p>
-</div>
+@using OnlineGalerija.Models;
+@using OnlineGalerija.Helper; 
+@model List<Post>
+<style>
+    .slike{
+        width:16rem;
+        height:auto;
+    }
+    .kartice
+    {
+        float:left;
+        margin-right:1rem;
+    }
+</style>
+@foreach (var x in Model)
+{
+    <div class="card border-primary mb-3 kartice" style="max-width: 18rem;">
+        <div class="card-header">@x.title</div>
+        <div class="card-body text-primary">
+            <h5 class="card-title">@x.user.username</h5>
+            <p class="card-text">@x.text</p>
+            @foreach (var y in x.images)
+            {
+                <img class="slike" src="data:image/png;base64,@Methods.ByteAToString(y.image_data)" />
+            }
+            <p class="card-text">@x.created_at</p>
+            <p class="card-text">Hashtags:</p> @foreach (var z in x.hashtags)
+            {
+                <p class="card-text">@z.text</p>
+            }
+            <button class="btn btn-success">Like</button>
+            <button class="btn btn-danger">Dislike</button>
+
+
+
+        </div>
+    </div>
+}
+<button class="btn btn-block btn-primary" onclick="location.href='/Mongo/AddPost'">Add new post</button>
