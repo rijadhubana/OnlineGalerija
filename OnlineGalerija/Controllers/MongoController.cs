@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using OnlineGalerija.Helper;
@@ -46,8 +50,45 @@ namespace OnlineGalerija.Controllers
         {
             return View("AddPost");
         }
-        public IActionResult RecordPost()
+        public IActionResult RecordPost(string title, string text,string img, string hashtag)
         {
+            //dodavanje hashtaga u tabelu ukoliko već ne postoji
+            Hashtag h1 = new Hashtag() { text = hashtag, referencedIn=new Collection<Post>() };
+            if (hashtag!=null && hashtag!="")
+            {
+                if (_db.database.GetCollection<Hashtag>("hashtag").Find(a=>a.text==hashtag).CountDocuments()==0)
+                {
+                    _db.database.GetCollection<Hashtag>("hashtag").InsertOne(h1);
+                }
+            }
+            Post p1 = new Post()
+            {
+                title = title,
+                text = text,
+                created_at = DateTime.Now,
+                updated_at = DateTime.Now,
+                hashtags = new Collection<Hashtag>(),
+                images = new Collection<Image>(),
+                reactions = new Collection<ReactionPost>(),
+                user = new Models.User() { _id=HttpContext.GetLogiraniKorisnik().mongoUser.objId }
+            };
+            if (hashtag!=null && hashtag!="")
+                p1.hashtags.Add(new Hashtag() { _id = h1._id });
+            _db.database.GetCollection<Post>("post").InsertOne(p1);
+            //osiguravanje konzistentnosti na obje strane
+            if (hashtag!=null && hashtag!="")
+            {
+                var trenutniH = _db.database.GetCollection<Hashtag>("hashtag").Find(a => a._id == h1._id).FirstOrDefault();
+                trenutniH.referencedIn.Add(new Post() { _id = p1._id });
+                _db.database.GetCollection<Hashtag>("hashtag").FindOneAndReplace(a => a._id == h1._id, trenutniH);
+            }
+            Image i1 = new Image() { image_data = Encoding.ASCII.GetBytes(img), post = new Post() { _id = p1._id } };
+            _db.database.GetCollection<Image>("image").InsertOne(i1);
+            var trenutniPost = _db.database.GetCollection<Post>("post").Find(a => a._id == p1._id).FirstOrDefault();
+            trenutniPost.images.Add(new Image() { _id = i1._id });
+            _db.database.GetCollection<Post>("post").FindOneAndReplace(a => a._id == p1._id, trenutniPost);
+            var trenutniUser = _db.database.GetCollection<User>("user").Find(a => a._id == HttpContext.GetLogiraniKorisnik().mongoUser.objId).FirstOrDefault();
+            trenutniUser.posts.Add(new Post() { _id = trenutniPost._id });
             return Redirect("/Mongo/Index");
 
         }

@@ -1,5 +1,40 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model List<Hashtag>
+<form action="/Mongo/RecordPost" method="post">
+    <label>Post title:</label>
+    <input class="form-control" type="text" name="title" />
+    <label>Post text:</label>
+    <input class="form-control" type="text" name="text" />
 
+    <label>Select image:</label>
+    <input class="form-control" type="file" onchange="previewFile()"><br>
+    <img src="" id="imgPreview" height="200" alt="Image preview...">
+    <input type="text" hidden id="imageAsString" name="img" />
+    <br/>
+    <label>Type in a hashtag:</label>
+    <input type="text" class="form-control" name="hashtag" />
+    <button class="form-control btn btn-success" type="submit">Submit post</button>
+</form>
+<script>
+    var imageAsString = document.getElementById("imageAsString");
+    imageAsString.value = "";
+    document.getElementById("imgPreview").style.visibility = "hidden";
+    function previewFile() {
+        const preview = document.querySelector('img');
+        const file = document.querySelector('input[type=file]').files[0];
+        const reader = new FileReader();
+        reader.addEventListener("load", function () {
+            // convert image file to base64 string
+            preview.src = reader.result;
+            document.getElementById("imgPreview").style.visibility = "visible";
+            var myStr = reader.result.split(',')[1].toString();
+            imageAsString.value = myStr;
+        }, false);
 
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
