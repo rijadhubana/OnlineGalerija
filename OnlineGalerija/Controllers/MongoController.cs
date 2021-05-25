@@ -89,6 +89,7 @@ namespace OnlineGalerija.Controllers
             _db.database.GetCollection<Post>("post").FindOneAndReplace(a => a._id == p1._id, trenutniPost);
             var trenutniUser = _db.database.GetCollection<User>("user").Find(a => a._id == HttpContext.GetLogiraniKorisnik().mongoUser.objId).FirstOrDefault();
             trenutniUser.posts.Add(new Post() { _id = trenutniPost._id });
+            _db.database.GetCollection<User>("user").FindOneAndReplace(a => a._id == trenutniUser._id, trenutniUser);
             return Redirect("/Mongo/Index");
 
         }
