@@ -1,8 +1,22 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@model string
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">@Model</a>.</p>
+@model List<OnlineGalerija.PostgresModels.Post>
+@foreach (var x in Model)
+{
+<div class="card border-primary mb-3 kartice" style="max-width: 18rem;">
+    <div class="card-header">@x.Id</div>
+    <div class="card-header">@x.Title</div>
+    <div class="card-body text-primary">
+
+        <p class="card-text">@x.Text</p>
+        <button class="btn btn-success">Like</button>
+        <button class="btn btn-danger">Dislike</button>
+        <a asp-controller="Postgre" asp-action="Post" asp-route-id="@x.Id"
+           class="btn btn-sm btn-outline-secondary">Detalji</a>
+
+
+
+    </div>
 </div>
+}

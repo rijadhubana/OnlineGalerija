@@ -1,0 +1,19 @@
+﻿@model OnlineGalerija.PostgresModels.Comment
+
+@{
+
+}
+<div>
+    <form method="post" asp-controller="Home" asp-action="Comment">
+        <input asp-for="PostId" type="hidden" />
+        <input asp-for="Id" type="hidden" />
+        <input asp-for="UserId" type="hidden" />
+        <div class="form-group">
+            <textarea asp-for="Text" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Pošalji" class="btn btn-primary" />
+        </div>
+
+    </form>
+</div>

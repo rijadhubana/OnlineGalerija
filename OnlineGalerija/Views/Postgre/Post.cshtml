@@ -1,0 +1,37 @@
+﻿@model OnlineGalerija.PostgresModels.Post
+<div class="container">
+    <h3 class="display-4">Objava</h3>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>@Model.Title</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="description">
+
+                        @Model.Text
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<div class="comment-section">
+        <h4>Komentari</h4>
+        @{
+            await Html.RenderPartialAsync("_Comment", new Comment { post = Model.Id, Id = 0, UserId = Model.Korisnik });
+        }
+        <hr />
+        @foreach (var c in Model.Comments)
+        {
+            <p>
+                @c.UserId --- @c.
+            </p>
+            <p>
+                @c.Message
+            </p>
+        }
+    </div>*@
+</div>
