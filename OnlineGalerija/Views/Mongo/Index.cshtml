@@ -2,17 +2,17 @@
     ViewData["Title"] = "Home Page";
 }
 @using OnlineGalerija.Models;
-@using OnlineGalerija.Helper; 
+@using OnlineGalerija.Helper;
 @model List<Post>
 <style>
-    .slike{
-        width:16rem;
-        height:auto;
+    .slike {
+        width: 16rem;
+        height: auto;
     }
-    .kartice
-    {
-        float:left;
-        margin-right:1rem;
+
+    .kartice {
+        float: left;
+        margin-right: 1rem;
     }
 </style>
 @foreach (var x in Model)
@@ -34,9 +34,17 @@
             <button class="btn btn-success">Like</button>
             <button class="btn btn-danger">Dislike</button>
 
-
-
+            <br />
+            <br />
+            <button class="btn btn-sm btn-primary" onclick="location.href='/Mongo/EditPost/@(x._id)'">Edit post</button>
+            <br />
+            <form asp-action="RemovePost" asp-route-id="@x._id" method="post">
+                <button type="submit" class="btn btn-sm btn-danger">
+                    Delete
+                </button>
+            </form>
         </div>
     </div>
+    
 }
 <button class="btn btn-block btn-primary" onclick="location.href='/Mongo/AddPost'">Add new post</button>
