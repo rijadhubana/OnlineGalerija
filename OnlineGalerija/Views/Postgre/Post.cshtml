@@ -18,20 +18,20 @@
             </div>
         </div>
     </div>
-    @*<div class="comment-section">
+    <div class="comment-section">
         <h4>Komentari</h4>
         @{
-            await Html.RenderPartialAsync("_Comment", new Comment { post = Model.Id, Id = 0, UserId = Model.Korisnik });
+            await Html.RenderPartialAsync("_Comment", new OnlineGalerija.PostgresModels.Comment { PostId = Model.Id, UserId = Model.UserId });
         }
         <hr />
         @foreach (var c in Model.Comments)
         {
             <p>
-                @c.UserId --- @c.
+                @c.UserId --- @c.CreatedAt <a asp-controller="Postgre" asp-action="Comment" asp-route-id="@c.Id" class="btn btn-sm btn-outline-secondary">Uredi</a>&nbsp;&nbsp;<a asp-controller="Postgre" asp-action="Delete" asp-route-id="@c.Id" class="btn btn-sm btn-danger">Izbriši</a>
             </p>
             <p>
-                @c.Message
+                @c.Text
             </p>
         }
-    </div>*@
+    </div>
 </div>
