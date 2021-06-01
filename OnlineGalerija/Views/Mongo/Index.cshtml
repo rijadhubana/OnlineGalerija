@@ -6,45 +6,65 @@
 @model List<Post>
 <style>
     .slike {
-        width: 16rem;
-        height: auto;
+        width: 17rem;
+        height: 16rem;
     }
 
     .kartice {
         float: left;
         margin-right: 1rem;
+        margin-top: 1rem;
+        
     }
 </style>
-@foreach (var x in Model)
-{
-    <div class="card border-primary mb-3 kartice" style="max-width: 18rem;">
-        <div class="card-header">@x.title</div>
-        <div class="card-body text-primary">
-            <h5 class="card-title">@x.user.username</h5>
-            <p class="card-text">@x.text</p>
-            @foreach (var y in x.images)
-            {
-                <img class="slike" src="data:image/png;base64,@Methods.ByteAToString(y.image_data)" />
-            }
-            <p class="card-text">@x.created_at</p>
-            <p class="card-text">Hashtags:</p> @foreach (var z in x.hashtags)
-            {
-                <p class="card-text">@z.text</p>
-            }
-            <button class="btn btn-success">Like</button>
-            <button class="btn btn-danger">Dislike</button>
 
-            <br />
-            <br />
-            <button class="btn btn-sm btn-primary" onclick="location.href='/Mongo/EditPost/@(x._id)'">Edit post</button>
-            <br />
-            <form asp-action="RemovePost" asp-route-id="@x._id" method="post">
-                <button type="submit" class="btn btn-sm btn-danger">
-                    Delete
-                </button>
-            </form>
-        </div>
+<div class="container">
+    <button class="btn btn-lg btn-primary" onclick="location.href='/Mongo/AddPost'">Add new post</button>
+    <br />
+    <div class="row">
+        @foreach (var x in Model)
+        {
+
+            <div class="col-xs-12 col-sm-6 col-md-3">
+                <div class="card border-secondary float-left mb-3 kartice" style="max-width: 17.11rem;">
+                    <div class="card-header font-weight-bolder">@x.title</div>
+                    @foreach (var y in x.images)
+                    {
+                        <img class="slike" src="data:image/png;base64,@Methods.ByteAToString(y.image_data)">
+                    }
+                <div class="card-body">
+                    <h5 class="card-title">@x.user.username</h5>
+                    
+                    @*<p class="card-text">@x.created_at</p>*@
+                    <p class="card-text">Hashtags:</p> @foreach (var z in x.hashtags)
+                    {
+                        <p class="card-text">#@z.text</p>
+                    }
+                    <hr>
+                    <p class="card-text">@x.text</p>
+
+                    <button class="btn btn-success"><i class="far fa-thumbs-up"></i></button>
+                    <button class="btn btn-danger"><i class="far fa-thumbs-down"></i></button>
+
+
+                    <br />
+                    <br />
+                    <button class="btn btn-sm btn-primary float-sm-left" style="margin-right:10px" onclick="location.href='/Mongo/EditPost/@(x._id)'">Edit post</button>
+
+                    <form asp-action="RemovePost" asp-route-id="@x._id" method="post" class="float-left">
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            Delete
+                        </button>
+                    </form>
+
+                </div>
+                    <div class="card-footer text-muted">
+                        @x.created_at
+                    </div>
+                </div>
+            </div>
+
+        }
     </div>
-    
-}
-<button class="btn btn-block btn-primary" onclick="location.href='/Mongo/AddPost'">Add new post</button>
+    </div>
+
