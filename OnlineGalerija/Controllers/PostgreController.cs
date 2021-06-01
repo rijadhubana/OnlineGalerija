@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OnlineGalerija.Helper;
 using OnlineGalerija.PostgresModels;
 
@@ -21,7 +22,54 @@ namespace OnlineGalerija.Controllers
             //primjer pristupanja login sesiji
             //var logiraniKorisnik = HttpContext.GetLogiraniKorisnik();
             //string userNameSurname = logiraniKorisnik.postgreUser.postgreUser.NameSurname;
-            return View();
+            var viewModel = _db.Posts.ToList();
+            return View(viewModel);
+        }
+        [HttpGet]
+        public IActionResult Post(int id)
+        {
+            var viewModel = _db.Posts.Include(p => p.Comments).Where(p => p.Id == id).FirstOrDefault();
+            return View(viewModel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Comment(Comment vm)
+        {
+                var comment = new Comment
+                {
+                    Id = vm.Id,
+                    Text = vm.Text,
+                    PostId = vm.PostId,
+                    UserId = vm.UserId,
+                    CreatedAt = DateTime.Now,
+                    
+                };
+            if (comment.Id > 0)
+            {
+                _db.Comments.Update(comment);
+            }
+            else
+            {
+                _db.Comments.Add(comment);
+            }            
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Index");
+                
+
+            
+        }
+        [HttpGet]
+        public IActionResult Comment(int id)
+        {
+            var viewModel = _db.Comments.Where(p => p.Id == id).FirstOrDefault();
+            return View(viewModel);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var komentar = await _db.Comments.FindAsync(id);
+            _db.Comments.Remove(komentar);
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
     }
 }
