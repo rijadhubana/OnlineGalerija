@@ -39,7 +39,7 @@
                             <label asp-for="images" class="control-label">Images:</label>
                             @foreach (var x in Model.images)
                             {
-                                <img class="slike" src="data:image/png;base64,@System.Convert.ToBase64String(x.image_data))" />
+                                <img class="slike" src="data:image/png;base64,@Methods.ByteAToString(x.image_data)" />
                             }
                         </div>
                         <br />

@@ -5,11 +5,11 @@
 @model OnlineGalerija.Models.Post
 @using OnlineGalerija.Helper;
 <style>
-   @* .slike {
-        margin-left
-        width: 17rem;
-        height: 16rem;
-    }*@
+    .slike {
+        margin-left: 12px;
+        width: 260px;
+        height: 260px;
+    }
 </style>
 
 <div class="container">
@@ -21,7 +21,7 @@
                     <div class="col-md-4">
                         @foreach (var x in Model.images)
                         {
-                            <img class="slike" src="data:image/png;base64,@System.Convert.ToBase64String(x.image_data))" />
+                            <img class="slike" src="data:image/png;base64,@Methods.ByteAToString(x.image_data)" />
                         }
                     </div>
                     <div class="col-md-8">
@@ -47,26 +47,4 @@
     </div>
 </div>
 
-
-<script>
-    var imageAsString = document.getElementById("imageAsString");
-    imageAsString.value = "";
-    document.getElementById("imgPreview").style.visibility = "hidden";
-    function previewFile() {
-        const preview = document.querySelector('img');
-        const file = document.querySelector('input[type=file]').files[0];
-        const reader = new FileReader();
-        reader.addEventListener("load", function () {
-            // convert image file to base64 string
-            preview.src = reader.result;
-            document.getElementById("imgPreview").style.visibility = "visible";
-            var myStr = reader.result.split(',')[1].toString();
-            imageAsString.value = myStr;
-        }, false);
-
-        if (file) {
-            reader.readAsDataURL(file);
-        }
-    }
-</script>
 
