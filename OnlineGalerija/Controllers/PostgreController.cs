@@ -71,5 +71,53 @@ namespace OnlineGalerija.Controllers
             await _db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        public async Task<IActionResult> Like(int id)
+        {
+            var reaction = new UserReactionComment
+            {
+                CommentId = id,
+                ReactionId = 1,
+                UserId = 1,
+
+            };
+            if (_db.UserReactionComments.Contains(reaction))
+            {
+                _db.UserReactionComments.Update(reaction);
+            }
+            else 
+            {
+                _db.UserReactionComments.Add(reaction);
+            }
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Index");
+
+
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> Dislike(int id)
+        {
+            var reaction = new UserReactionComment
+            {
+                CommentId = id,
+                ReactionId = 2,
+                UserId = 1,
+
+            };
+            if (_db.UserReactionComments.Contains(reaction))
+            {
+                _db.UserReactionComments.Update(reaction);
+            }
+            else
+            {
+                _db.UserReactionComments.Add(reaction);
+            }
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Index");
+
+
+
+        }
     }
 }

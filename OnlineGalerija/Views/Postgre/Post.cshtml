@@ -32,6 +32,9 @@
             <p>
                 @c.Text
             </p>
+            <p>
+                <a asp-controller="Postgre" asp-action="Like" asp-route-id="@c.Id" class="btn btn-sm btn-outline-success">Like</a>&nbsp;&nbsp;<a asp-controller="Postgre" asp-action="Dislike" asp-route-id="@c.Id" class="btn btn-sm btn-outline-danger">Dislike</a>
+            </p>
         }
     </div>
 </div>
