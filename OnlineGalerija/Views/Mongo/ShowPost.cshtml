@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@using OnlineGalerija.Models;
+@model OnlineGalerija.Models.Post
+@using OnlineGalerija.Helper;
+<style>
+   @* .slike {
+        margin-left
+        width: 17rem;
+        height: 16rem;
+    }*@
+</style>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="card border-secondary mb-3" style=" margin-top:80px; max-width: 1000px;">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        @foreach (var x in Model.images)
+                        {
+                            <img class="slike" src="data:image/png;base64,@System.Convert.ToBase64String(x.image_data))" />
+                        }
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title text-dark bg-light">@Model.title</h5>
+                            <hr>
+                            <p class="card-text">@Model.text</p>
+                            <hr />
+                            @foreach (var x in Model.hashtags)
+                            {
+                                <p class="card-text">#@x.text</p>
+                            }
+                            <hr>
+                            <p class="card-text"><small class="text-muted">Zadnji put ažurirano: @Model.updated_at</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <a asp-action="Index">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var imageAsString = document.getElementById("imageAsString");
+    imageAsString.value = "";
+    document.getElementById("imgPreview").style.visibility = "hidden";
+    function previewFile() {
+        const preview = document.querySelector('img');
+        const file = document.querySelector('input[type=file]').files[0];
+        const reader = new FileReader();
+        reader.addEventListener("load", function () {
+            // convert image file to base64 string
+            preview.src = reader.result;
+            document.getElementById("imgPreview").style.visibility = "visible";
+            var myStr = reader.result.split(',')[1].toString();
+            imageAsString.value = myStr;
+        }, false);
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+

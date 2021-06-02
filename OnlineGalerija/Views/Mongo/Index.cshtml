@@ -28,10 +28,10 @@
 
             <div class="col-xs-12 col-sm-6 col-md-3">
                 <div class="card border-secondary float-left mb-3 kartice" style="max-width: 17.11rem;">
-                    <div class="card-header text-dark bg-light font-weight-bolder">@x.title</div>
+                    <div class="card-header"><a class="text-dark bg-light font-weight-bolder" style="text-decoration:none;" href="/Mongo/ShowPost/@(x._id)">@x.title</a></div>
                     @foreach (var y in x.images)
                     {
-                        <img class="slike" src="data:image/png;base64,@Methods.ByteAToString(y.image_data)">
+                <a href="/Mongo/ShowPost/@(x._id)"><img class="slike" src="data:image/png;base64,@Methods.ByteAToString(y.image_data)"></a>
                     }
                 <div class="card-body">
                     <h5 class="card-title">@x.user.username</h5>

@@ -46,6 +46,31 @@ namespace OnlineGalerija.Controllers
             }
             return View("Index",viewModel);
         }
+
+        public IActionResult ShowPost(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }           
+
+            var post = _db.database.GetCollection<Post>("post").Find(a => a._id == id).FirstOrDefault();
+
+            foreach (var x in post.images)
+            {
+                var image = _db.database.GetCollection<Image>("image").Find(a => a._id == x._id).FirstOrDefault();
+                x.image_data = image.image_data;
+                x.post = image.post;
+            }
+            foreach (var x in post.hashtags)
+            {
+                var hashtag = _db.database.GetCollection<Hashtag>("hashtag").Find(a => a._id == x._id).FirstOrDefault();
+                x.text = hashtag.text;
+                x.referencedIn = hashtag.referencedIn;
+            }
+
+            return View("ShowPost" , post);
+        }
         public IActionResult AddPost()
         {
             return View("AddPost");
