@@ -119,5 +119,53 @@ namespace OnlineGalerija.Controllers
 
 
         }
+        [HttpGet]
+        public async Task<IActionResult> PostLike(int id)
+        {
+            var reaction = new UserReactionPost
+            {
+                PostId = id,
+                ReactionId = 1,
+                UserId = 1,
+
+            };
+            if (_db.UserReactionPosts.Contains(reaction))
+            {
+                _db.UserReactionPosts.Update(reaction);
+            }
+            else
+            {
+                _db.UserReactionPosts.Add(reaction);
+            }
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Index");
+
+
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> PostDislike(int id)
+        {
+            var reaction = new UserReactionPost
+            {
+                PostId = id,
+                ReactionId = 2,
+                UserId = 1,
+
+            };
+            if (_db.UserReactionPosts.Contains(reaction))
+            {
+                _db.UserReactionPosts.Update(reaction);
+            }
+            else
+            {
+                _db.UserReactionPosts.Add(reaction);
+            }
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Index");
+
+
+
+        }
     }
 }

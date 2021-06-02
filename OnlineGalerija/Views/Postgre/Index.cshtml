@@ -10,8 +10,10 @@
     <div class="card-body text-primary">
 
         <p class="card-text">@x.Text</p>
-        <button class="btn btn-success">Like</button>
-        <button class="btn btn-danger">Dislike</button>
+        <a asp-controller="Postgre" asp-action="PostLike" asp-route-id="@x.Id"
+           class="btn btn-sm btn-success">Like</a>
+        <a asp-controller="Postgre" asp-action="PostDislike" asp-route-id="@x.Id"
+           class="btn btn-sm btn-danger">Dislike</a>
         <a asp-controller="Postgre" asp-action="Post" asp-route-id="@x.Id"
            class="btn btn-sm btn-outline-secondary">Detalji</a>
 
