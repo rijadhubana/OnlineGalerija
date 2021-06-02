@@ -11,68 +11,76 @@
     }
 </style>
 
-<h1>Posts</h1>
 
-<h4>Edit Post</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form action="/Mongo/UpdatePost" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input asp-for="_id" type="hidden" class="form-control" name="id"/>
-                <span asp-validation-for="_id" class="text-danger"></span>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card" style="margin: 40px 0px 0px 0px;">
+                <div class="card-header text-white bg-dark" style="font-size:26px;">New post</div>
+                <br>
+                <div class="card-body">
+                    <form action="/Mongo/UpdatePost" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <input asp-for="_id" type="hidden" class="form-control" name="id" />
+                            <span asp-validation-for="_id" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="title" class="control-label">Title:</label>
+                            <input asp-for="title" class="form-control" name="title" />
+                            <span asp-validation-for="title" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="text" class="control-label">Description:</label>
+                            <input asp-for="text" class="form-control" name="text" />
+                            <span asp-validation-for="text" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="images" class="control-label">Images:</label>
+                            @foreach (var x in Model.images)
+                            {
+                                <img class="slike" src="data:image/png;base64,@System.Convert.ToBase64String(x.image_data))" />
+                            }
+                        </div>
+                        <br />
+                        <label>Select image:</label>
+                        <input class="form-control" type="file" onchange="previewFile()"><br>
+                        <img src="" id="imgPreview" height="200" alt="Image preview...">
+                        <input type="text" hidden id="imageAsString" name="img" />
+
+                        <div class="form-group">
+                            <label asp-for="hashtags" class="control-label">Hashtags:</label>
+                            @foreach (var x in Model.hashtags)
+                            {
+                                <input type="text" asp-for="@x.text" class="form-control" name="hashtag" />
+                            }
+                        </div>
+                        @*<div class="form-group">
+                            <label asp-for="created_at" class="control-label"></label>
+                            <input asp-for="created_at" class="form-control" name="createdAt" />
+                            <span asp-validation-for="created_at" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="updated_at" class="control-label"></label>
+                            <input asp-for="updated_at" class="form-control" />
+                            <span asp-validation-for="updated_at" class="text-danger"></span>
+                        </div>*@
+                        <div class="form-group">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>
+
+                        <div class="form-group">
+                            <a asp-action="Index">Back to List</a>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="title" class="control-label"></label>
-                <input asp-for="title" class="form-control" name="title"/>
-                <span asp-validation-for="title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="text" class="control-label"></label>
-                <input asp-for="text" class="form-control" name="text" />
-                <span asp-validation-for="text" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="images" class="control-label"></label>
-                @foreach (var x in Model.images)
-                {
-                    <img class="slike" src="data:image/png;base64,@System.Convert.ToBase64String(x.image_data))" />
-                }
-            </div>
-            <br />
-            <label>Select image:</label>
-            <input class="form-control" type="file" onchange="previewFile()"><br>
-            <img src="" id="imgPreview" height="200" alt="Image preview...">
-            <input type="text" hidden id="imageAsString" name="img" />
-            
-            <div class="form-group">
-                <label asp-for="hashtags" class="control-label"></label>
-                @foreach (var x in Model.hashtags)
-                {
-                    <input type="text" asp-for="@x.text" class="form-control" name="hashtag" />
-                }
-            </div>
-            <div class="form-group">
-                <label asp-for="created_at" class="control-label"></label>
-                <input asp-for="created_at" class="form-control" name="createdAt"/>
-                <span asp-validation-for="created_at" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="updated_at" class="control-label"></label>
-                <input asp-for="updated_at" class="form-control" />
-                <span asp-validation-for="updated_at" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
+<br />
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 <script>
     var imageAsString = document.getElementById("imageAsString");
@@ -97,6 +105,6 @@
 </script>
 
 @*
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}*@
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }*@

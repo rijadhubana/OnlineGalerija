@@ -21,13 +21,14 @@
 <div class="container">
     <button class="btn btn-lg btn-primary" onclick="location.href='/Mongo/AddPost'">Add new post</button>
     <br />
+    <br />
     <div class="row">
         @foreach (var x in Model)
         {
 
             <div class="col-xs-12 col-sm-6 col-md-3">
                 <div class="card border-secondary float-left mb-3 kartice" style="max-width: 17.11rem;">
-                    <div class="card-header font-weight-bolder">@x.title</div>
+                    <div class="card-header text-dark bg-light font-weight-bolder">@x.title</div>
                     @foreach (var y in x.images)
                     {
                         <img class="slike" src="data:image/png;base64,@Methods.ByteAToString(y.image_data)">
