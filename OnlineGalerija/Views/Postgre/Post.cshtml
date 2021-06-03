@@ -1,40 +1,55 @@
-﻿@model OnlineGalerija.PostgresModels.Post
+﻿@model OnlineGalerija.PostgresModels.Post;
+
+
 <div class="container">
-    <h3 class="display-4">Objava</h3>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-12">
-                    <h1>@Model.Title</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="card border-secondary mb-3" style=" margin-top:80px;">
+                <div class="row no-gutters">
+
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title text-dark bg-light">@Model.Title</h5>
+                            <hr>
+                            <p class="card-text">@Model.Text</p>
+                            <hr />
+
+                            <hr>
+                            <p class="card-text"><small class="text-muted">Zadnji put ažurirano: @Model.UpdatedAt</small></p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <p class="description">
-
-                        @Model.Text
-                    </p>
-                </div>
+            <div>
+                <a asp-action="Index">Back to List</a>
+            </div>
+            <br />
+            <div class="comment-section">
+                <h4>Komentari</h4>
+                @{
+                    await Html.RenderPartialAsync("_Comment", new OnlineGalerija.PostgresModels.Comment { PostId = Model.Id, UserId = Model.UserId });
+                }
+                <hr />
+                @foreach (var c in Model.Comments)
+                {
+                    <div class="card">
+                        <div class="card-body">
+                             
+                            <h5 class="card-title">User ID: @c.UserId --- @c.CreatedAt <a asp-controller="Postgre" asp-action="Comment" asp-route-id="@c.Id" class="btn btn-sm btn-outline-secondary">Uredi</a>&nbsp;&nbsp;<a asp-controller="Postgre" asp-action="Delete" asp-route-id="@c.Id" class="btn btn-sm btn-danger">Izbriši</a></h5>
+                            
+                            <p class="card-text">@c.Text</p>
+                            <p>
+                                <a asp-controller="Postgre" asp-action="Like" asp-route-id="@c.Id" class="btn btn-sm btn-outline-success"><i class="far fa-thumbs-up"></i></a>&nbsp;&nbsp;<a asp-controller="Postgre" asp-action="Dislike" asp-route-id="@c.Id" class="btn btn-sm btn-outline-danger"><i class="far fa-thumbs-down"></i></a>
+                            </p>
+                        </div>
+                    </div>
+                    <br />
+                   
+                }
             </div>
         </div>
     </div>
-    <div class="comment-section">
-        <h4>Komentari</h4>
-        @{
-            await Html.RenderPartialAsync("_Comment", new OnlineGalerija.PostgresModels.Comment { PostId = Model.Id, UserId = Model.UserId });
-        }
-        <hr />
-        @foreach (var c in Model.Comments)
-        {
-            <p>
-                @c.UserId --- @c.CreatedAt <a asp-controller="Postgre" asp-action="Comment" asp-route-id="@c.Id" class="btn btn-sm btn-outline-secondary">Uredi</a>&nbsp;&nbsp;<a asp-controller="Postgre" asp-action="Delete" asp-route-id="@c.Id" class="btn btn-sm btn-danger">Izbriši</a>
-            </p>
-            <p>
-                @c.Text
-            </p>
-            <p>
-                <a asp-controller="Postgre" asp-action="Like" asp-route-id="@c.Id" class="btn btn-sm btn-outline-success">Like</a>&nbsp;&nbsp;<a asp-controller="Postgre" asp-action="Dislike" asp-route-id="@c.Id" class="btn btn-sm btn-outline-danger">Dislike</a>
-            </p>
-        }
-    </div>
+
+    
 </div>
