@@ -143,8 +143,9 @@ namespace OnlineGalerija.Controllers
             return View("EditPost", post);
         }
 
-        //ne radi jos
-        public IActionResult UpdatePost(string id, string title, string text, string img, string hashtag, DateTime updatedAt)
+        // ukoliko ne  mijenjamo hashtag -> dolazi do errora..fix
+        [Obsolete]
+        public IActionResult UpdatePost(string id, string title, string text, string img, string hashtag, DateTime createdAt)
         {
             Hashtag h1 = new Hashtag() { text = hashtag, referencedIn = new Collection<Post>() };
             if (hashtag != null && hashtag != "")
@@ -156,8 +157,11 @@ namespace OnlineGalerija.Controllers
                 }
             }
 
-            /*Post p1 = new Post()
+            var filter = _db.database.GetCollection<Post>("post").Find(a => a._id == id).FirstOrDefault();
+
+            Post p1 = new Post()
             {
+                _id = id,
                 title = title,
                 text = text,
                 created_at = createdAt,
@@ -166,18 +170,12 @@ namespace OnlineGalerija.Controllers
                 images = new Collection<Image>(),
                 reactions = new Collection<ReactionPost>(),
                 user = new Models.User() { _id = HttpContext.GetLogiraniKorisnik().mongoUser.objId }
-            };*/
+            };
 
-            var p1 = _db.database.GetCollection<Post>("post").Find(a => a._id == id).FirstOrDefault();
-            p1.title.Replace(p1.title, title);
-            p1.text.Replace(p1.text, text);
-            
-            //"Vezemo" hashtag sa postom 
             if (hashtag != null && hashtag != "")
                 p1.hashtags.Add(new Hashtag() { _id = h1._id });
-            //Zamijeni postove (update)
-    
-            _db.database.GetCollection<Post>("post").FindOneAndReplace(a => a._id == id, p1);
+
+            _db.database.GetCollection<Post>("post").ReplaceOne(a => a._id == id, p1);
 
             //osiguravanje konzistentnosti na obje strane
             if (hashtag != null && hashtag != "")
@@ -193,7 +191,7 @@ namespace OnlineGalerija.Controllers
             //dodajemo sliku u kolekciju slika posta i ponovo radimo update
             var trenutniPost = _db.database.GetCollection<Post>("post").Find(a => a._id == p1._id).FirstOrDefault();
             trenutniPost.images.Add(new Image() { _id = i1._id });
-            _db.database.GetCollection<Post>("post").FindOneAndReplace(a => a._id == p1._id, trenutniPost);
+            _db.database.GetCollection<Post>("post").FindOneAndReplace(a => a._id == id, trenutniPost);
 
             //updateiramo usera koji je dodao post
             var trenutniUser = _db.database.GetCollection<User>("user").Find(a => a._id == HttpContext.GetLogiraniKorisnik().mongoUser.objId).FirstOrDefault();

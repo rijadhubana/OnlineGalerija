@@ -55,16 +55,14 @@
                                 <input type="text" asp-for="@x.text" class="form-control" name="hashtag" />
                             }
                         </div>
-                        @*<div class="form-group">
-                            <label asp-for="created_at" class="control-label"></label>
-                            <input asp-for="created_at" class="form-control" name="createdAt" />
+                        <div class="form-group">
+                            <input asp-for="created_at" type="hidden" class="form-control" name="createdAt" />
                             <span asp-validation-for="created_at" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="updated_at" class="control-label"></label>
-                            <input asp-for="updated_at" class="form-control" />
+                            <input asp-for="updated_at" type="hidden" class="form-control" />
                             <span asp-validation-for="updated_at" class="text-danger"></span>
-                        </div>*@
+                        </div>
                         <div class="form-group">
                             <input type="submit" value="Save" class="btn btn-primary" />
                         </div>
